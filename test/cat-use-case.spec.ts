@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest';
 import { CatUseCase } from '../src/application/usecases/cat.use-case';
 
 describe('CatUseCase', () => {
