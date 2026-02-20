@@ -15,10 +15,12 @@ const catUseCase = new CatUseCase(catAdapter)
 const catController = new CatController(catUseCase);
 const userController = new UserController();
 
-// Rutas Gatos
-app.get('/breeds', (req: Request, res: Response) => catController.getAll(req, res));
-app.get('/breeds/search', (req: Request, res: Response) => catController.search(req, res));
-app.get('/imagesbybreedid', (req: Request, res: Response) => catController.getImages(req, res));
+import { authMiddleware } from './infrastructure/middleware/auth.middleware';
+
+// Rutas Gatos (Protegidas)
+app.get('/breeds', authMiddleware, (req: Request, res: Response) => catController.getAll(req, res));
+app.get('/breeds/search', authMiddleware, (req: Request, res: Response) => catController.search(req, res));
+app.get('/imagesbybreedid', authMiddleware, (req: Request, res: Response) => catController.getImages(req, res));
 
 // Rutas Usuarios
 app.get('/register', (req: Request, res: Response) => userController.register(req, res));

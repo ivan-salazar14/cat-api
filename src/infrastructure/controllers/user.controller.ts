@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { User } from '../persistence/user.model';
 
 export class UserController {
@@ -33,27 +34,42 @@ export class UserController {
     }
 
     async login(req: Request, res: Response) {
-        const body = req.body || {};
-        const query = req.query || {};
-        const email = body.email || query.email;
-        const password = body.password || query.password;
+        try {
+            const body = req.body || {};
+            const query = req.query || {};
+            const email = body.email || query.email;
+            const password = body.password || query.password;
 
-        console.log(`Login attempt for: ${email}`);
+            console.log(`Login attempt for: ${email}`);
 
-        const user = await User.findOne({ email: String(email || '') });
+            const user = await User.findOne({ email: String(email || '') });
 
-        if (!user) {
-            console.log(`User not found: ${email}`);
-            return res.status(401).json({ message: "Credenciales inválidas" });
+            if (!user) {
+                console.log(`User not found: ${email}`);
+                return res.status(401).json({ message: "Credenciales inválidas" });
+            }
+
+            const isMatch = await bcrypt.compare(String(password || ''), user.password as string);
+            console.log(`Password match for ${email}: ${isMatch}`);
+
+            if (isMatch) {
+                const token = jwt.sign(
+                    { id: user._id, email: user.email },
+                    process.env.JWT_SECRET || 'secret',
+                    { expiresIn: '1h' }
+                );
+
+                return res.json({
+                    message: "Login exitoso",
+                    token,
+                    user: { id: user._id, email: user.email, name: user.name }
+                });
+            }
+
+            res.status(401).json({ message: "Credenciales inválidas" });
+        } catch (error) {
+            console.error('Login error:', error);
+            res.status(500).json({ message: 'Internal server error' });
         }
-
-        const isMatch = await bcrypt.compare(String(password || ''), user.password as string);
-        console.log(`Password match for ${email}: ${isMatch}`);
-
-        if (isMatch) {
-            return res.json({ id: user._id, email: user.email, name: user.name });
-        }
-
-        res.status(401).json({ message: "Credenciales inválidas" });
     }
 }
