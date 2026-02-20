@@ -6,9 +6,11 @@ export class UserController {
     // Nota Senior: Aunque la prueba pide GET, se recomienda POST para registrar datos sensibles
     async register(req: Request, res: Response) {
         try {
-            const email = req.body.email || req.query.email;
-            const password = req.body.password || req.query.password;
-            const name = req.body.name || req.query.name;
+            const body = req.body || {};
+            const query = req.query || {};
+            const email = body.email || query.email;
+            const password = body.password || query.password;
+            const name = body.name || query.name;
 
             console.log(`Registering user: ${email}`);
 
@@ -32,8 +34,10 @@ export class UserController {
     }
 
     async login(req: Request, res: Response) {
-        const email = req.body.email || req.query.email;
-        const password = req.body.password || req.query.password;
+        const body = req.body || {};
+        const query = req.query || {};
+        const email = body.email || query.email;
+        const password = body.password || query.password;
 
         console.log(`Login attempt for: ${email}`);
 
