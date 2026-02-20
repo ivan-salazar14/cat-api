@@ -1,29 +1,9 @@
-export class User {
-    _id: string;
-    email: string;
-    password: string;
-    name: string;
+import mongoose, { Schema } from 'mongoose';
 
-    constructor(email: string, password: string, name: string) {
-        this._id = Math.random().toString(36).substring(7);
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-    /*
-    * Simulate database operations
-    */
-    static async create(data: { email: string, password: string, name: string }) {
-        const newUser = new User(data.email, data.password, data.name);
-        return newUser;
-    }
-    /*
-    * Simulate database operations
-    */
-    static async findOne(query: { email: string }) {
-        if (query.email === "[EMAIL_ADDRESS]") {
-            return new User("[EMAIL_ADDRESS]", "hashed_pass", "Admin");
-        }
-        return null;
-    }
-}
+const UserSchema = new Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true }
+});
+
+export const User = mongoose.model('User', UserSchema);

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { CatUseCase } from '../application/use-cases/cat.use-case';
+import { CatUseCase } from '../src/application/usecases/cat.use-case';
 
 describe('CatUseCase', () => {
     it('should filter breeds by name correctly', async () => {

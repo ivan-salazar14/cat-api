@@ -21,9 +21,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run test",
+    "test": "vitest run",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "dev": "ts-node src/main.ts"
   },
   "dependencies": {
@@ -36,8 +36,10 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "dotenv": "^17.3.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
