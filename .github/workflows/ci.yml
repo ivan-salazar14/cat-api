@@ -26,6 +26,9 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Stop pre-installed MongoDB
+        run: sudo systemctl stop mongodb || true
+
       - name: Start MongoDB via Docker Compose
         run: |
           docker compose up -d mongodb
