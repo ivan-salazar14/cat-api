@@ -1,9 +1,11 @@
 export class User {
+    _id: string;
     email: string;
     password: string;
     name: string;
 
     constructor(email: string, password: string, name: string) {
+        this._id = Math.random().toString(36).substring(7);
         this.email = email;
         this.password = password;
         this.name = name;

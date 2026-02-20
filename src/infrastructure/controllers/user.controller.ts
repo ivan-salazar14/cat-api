@@ -7,8 +7,12 @@ export class UserController {
     async register(req: Request, res: Response) {
         try {
             const { email, password, name } = req.query; // Según requerimiento GET /Register
-            const hashedPassword = await bcrypt.hash(String(password), 10);
-            const newUser = await User.create({ email, password: hashedPassword, name });
+            const hashedPassword = await bcrypt.hash(String(password || ''), 10);
+            const newUser = await User.create({
+                email: String(email || ''),
+                password: hashedPassword,
+                name: String(name || '')
+            });
 
             res.status(201).json({ message: "Usuario Creado", user: { email: newUser.email } });
         } catch (error) {
@@ -18,9 +22,9 @@ export class UserController {
 
     async login(req: Request, res: Response) {
         const { email, password } = req.query;
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: String(email || '') });
 
-        if (user && await bcrypt.compare(String(password), user.password)) {
+        if (user && await bcrypt.compare(String(password || ''), user.password)) {
             return res.json({ id: user._id, email: user.email, name: user.name });
         }
         res.status(401).json({ message: "Credenciales inválidas" });
