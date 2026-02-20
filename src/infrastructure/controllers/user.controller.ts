@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import { User } from '../persistence/user.model';
 
 export class UserController {
-    // Nota Senior: Aunque la prueba pide GET, se recomienda POST para registrar datos sensibles
     async register(req: Request, res: Response) {
         try {
             const body = req.body || {};
