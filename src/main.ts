@@ -19,8 +19,8 @@ import { authMiddleware } from './infrastructure/middleware/auth.middleware';
 app.get('/breeds', authMiddleware, (req: Request, res: Response) => catController.getAll(req, res));
 app.get('/breeds/search', authMiddleware, (req: Request, res: Response) => catController.search(req, res));
 app.get('/imagesbybreedid', authMiddleware, (req: Request, res: Response) => catController.getImages(req, res));
-app.get('/register', (req: Request, res: Response) => userController.register(req, res));
-app.get('/login', (req: Request, res: Response) => userController.login(req, res));
+app.post('/auth/register', (req: Request, res: Response) => userController.register(req, res));
+app.post('/auth/login', (req: Request, res: Response) => userController.login(req, res));
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/cat-api';
 const PORT = process.env.PORT || 3000;
