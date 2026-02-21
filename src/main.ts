@@ -1,12 +1,22 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { CatController } from './infrastructure/controllers/cat.controller';
 import { TheCatApiAdapter } from './infrastructure/adapters/cat_api.adapter';
 import { CatUseCase } from './application/usecases/cat.use-case';
 import { UserController } from './infrastructure/controllers/user.controller';
 
 const app = express();
+
+// CORS configuration
+app.use(cors({
+  origin: ['http://localhost:4200', 'http://localhost:4201'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 const catAdapter = new TheCatApiAdapter();
